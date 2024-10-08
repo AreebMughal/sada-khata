@@ -4,7 +4,7 @@ import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { loginUser } from "@/store/authslice/authslice";// Adjust the import path as necessary
+import { loginUser } from "@/store/auth-slice/auth-slice";
 
 interface IFormInput {
   email: string;
