@@ -3,6 +3,8 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { signupUser } from "@/store/auth-slice/auth-slice";
 
 interface IFormInput {
   username: string;
@@ -13,22 +15,24 @@ interface IFormInput {
 }
 
 const SignupForm: React.FC = () => {
-  const { register, handleSubmit, formState: { errors }, watch, reset } = useForm<IFormInput>();
+  const { register, handleSubmit, formState: { errors }, watch } = useForm<IFormInput>();
   const router = useRouter();
+  const dispatch = useDispatch();
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    // Simulate storing user data in localStorage
-    localStorage.setItem('user', JSON.stringify({
-      username: data.username,
-      email: data.email,
-      password: data.password
-    }));
-    
-    // Redirect to login page
-    router.push("/login");
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    try {
+      const result = await dispatch(signupUser(data));
+      if (signupUser.fulfilled.match(result)) {
+        router.push("/login");
+      }
+    } catch (error) {
+      console.error("Signup failed:", error);
+      alert("Signup failed");
+    }
   };
 
   const password = watch("password");
+
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">

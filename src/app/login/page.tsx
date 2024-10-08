@@ -3,6 +3,8 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { loginUser } from "@/store/authslice/authslice";// Adjust the import path as necessary
 
 interface IFormInput {
   email: string;
@@ -12,18 +14,15 @@ interface IFormInput {
 const LoginForm: React.FC = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>();
   const router = useRouter();
+  const dispatch = useDispatch();
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      const user = JSON.parse(storedUser);
-      if (data.email === user.email && data.password === user.password) {
-        router.push("/dashboard");
-      } else {
-        alert("Invalid email or password");
-      }
-    } else {
-      alert("No user data found");
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    try {
+      await dispatch(loginUser(data));
+      router.push("/dashboard");
+    } catch (error) {
+      console.error("Login failed:", error);
+      alert("Invalid email or password");
     }
   };
 
