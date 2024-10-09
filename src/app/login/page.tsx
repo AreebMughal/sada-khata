@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { loginUser } from "@/store/auth-slice/auth-slice";
+import React from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '@/store/auth-slice/auth-slice';
 
 interface IFormInput {
   email: string;
@@ -12,17 +12,21 @@ interface IFormInput {
 }
 
 const LoginForm: React.FC = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<IFormInput>();
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+  const onSubmit: SubmitHandler<IFormInput> = async data => {
     try {
       await dispatch(loginUser(data));
-      router.push("/dashboard");
+      router.push('/dashboard');
     } catch (error) {
-      console.error("Login failed:", error);
-      alert("Invalid email or password");
+      console.error('Login failed:', error);
+      alert('Invalid email or password');
     }
   };
 
@@ -33,16 +37,18 @@ const LoginForm: React.FC = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Email Field */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email address</label>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              Email address
+            </label>
             <input
               id="email"
               type="email"
-              {...register("email", {
-                required: "Email is required",
+              {...register('email', {
+                required: 'Email is required',
                 pattern: {
                   value: /^\S+@\S+$/i,
-                  message: "Invalid email address",
-                },
+                  message: 'Invalid email address'
+                }
               })}
               className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
               placeholder="you@example.com"
@@ -51,16 +57,18 @@ const LoginForm: React.FC = () => {
           </div>
           {/* Password Field */}
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
             <input
               id="password"
               type="password"
-              {...register("password", {
-                required: "Password is required",
+              {...register('password', {
+                required: 'Password is required',
                 minLength: {
                   value: 6,
-                  message: "Password must be at least 6 characters long",
-                },
+                  message: 'Password must be at least 6 characters long'
+                }
               })}
               className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
               placeholder="••••••••"
@@ -75,7 +83,10 @@ const LoginForm: React.FC = () => {
           </button>
         </form>
         <p className="text-sm text-center text-gray-500">
-          Dont have an account? <a href="/signup" className="text-blue-600 hover:underline">Sign up</a>
+          Dont have an account?{' '}
+          <a href="/signup" className="text-blue-600 hover:underline">
+            Sign up
+          </a>
         </p>
       </div>
     </div>

@@ -5,42 +5,33 @@ const initialState: InitialState = {
   error: null,
   status: 'idle',
   user: null
-}
+};
 
 // Async thunk for signup
-export const signupUser = createAsyncThunk(
-  'auth/signupUser',
-  async (userData: any) => {
-    // Simulate API call
-    localStorage.setItem('user', JSON.stringify(userData));
-    return userData;
-  }
-);
+export const signupUser = createAsyncThunk('auth/signupUser', async (userData: any) => {
+  // Simulate API call
+  localStorage.setItem('user', JSON.stringify(userData));
+  return userData;
+});
 
 // Async thunk for login
-export const loginUser = createAsyncThunk(
-  'auth/loginUser',
-  async (credentials: any) => {
-    const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
-    if (
-      credentials.email === storedUser.email &&
-      credentials.password === storedUser.password
-    ) {
-      return storedUser;
-    } else {
-      throw new Error('Invalid email or password');
-    }
+export const loginUser = createAsyncThunk('auth/loginUser', async (credentials: any) => {
+  const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+  if (credentials.email === storedUser.email && credentials.password === storedUser.password) {
+    return storedUser;
+  } else {
+    throw new Error('Invalid email or password');
   }
-);
+});
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {},
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       // Signup cases
-      .addCase(signupUser.pending, (state) => {
+      .addCase(signupUser.pending, state => {
         state.status = 'loading';
       })
       .addCase(signupUser.fulfilled, (state, action) => {
@@ -52,7 +43,7 @@ const authSlice = createSlice({
         state.error = action.error.message;
       })
       // Login cases
-      .addCase(loginUser.pending, (state) => {
+      .addCase(loginUser.pending, state => {
         state.status = 'loading';
       })
       .addCase(loginUser.fulfilled, (state, action) => {
@@ -63,7 +54,7 @@ const authSlice = createSlice({
         state.status = 'failed';
         state.error = action.error.message;
       });
-  },
+  }
 });
 
 export default authSlice.reducer;

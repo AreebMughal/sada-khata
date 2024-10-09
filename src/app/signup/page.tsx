@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { signupUser } from "@/store/auth-slice/auth-slice";
+import React from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+import { signupUser } from '@/store/auth-slice/auth-slice';
 
 interface IFormInput {
   username: string;
@@ -15,24 +15,28 @@ interface IFormInput {
 }
 
 const SignupForm: React.FC = () => {
-  const { register, handleSubmit, formState: { errors }, watch } = useForm<IFormInput>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch
+  } = useForm<IFormInput>();
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+  const onSubmit: SubmitHandler<IFormInput> = async data => {
     try {
       const result = await dispatch(signupUser(data));
       if (signupUser.fulfilled.match(result)) {
-        router.push("/login");
+        router.push('/login');
       }
     } catch (error) {
-      console.error("Signup failed:", error);
-      alert("Signup failed");
+      console.error('Signup failed:', error);
+      alert('Signup failed');
     }
   };
 
-  const password = watch("password");
-
+  const password = watch('password');
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -41,10 +45,12 @@ const SignupForm: React.FC = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Name Field */}
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              Name
+            </label>
             <input
               id="name"
-              {...register("name", { required: "Name is required" })}
+              {...register('name', { required: 'Name is required' })}
               className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
               placeholder="Your name"
             />
@@ -52,10 +58,12 @@ const SignupForm: React.FC = () => {
           </div>
           {/* Username Field */}
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
+            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+              Username
+            </label>
             <input
               id="username"
-              {...register("username", { required: "Username is required" })}
+              {...register('username', { required: 'Username is required' })}
               className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
               placeholder="Your username"
             />
@@ -63,16 +71,18 @@ const SignupForm: React.FC = () => {
           </div>
           {/* Email Field */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email address</label>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              Email address
+            </label>
             <input
               id="email"
               type="email"
-              {...register("email", {
-                required: "Email is required",
+              {...register('email', {
+                required: 'Email is required',
                 pattern: {
                   value: /^\S+@\S+$/i,
-                  message: "Invalid email address",
-                },
+                  message: 'Invalid email address'
+                }
               })}
               className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
               placeholder="you@example.com"
@@ -81,16 +91,18 @@ const SignupForm: React.FC = () => {
           </div>
           {/* Password Field */}
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
             <input
               id="password"
               type="password"
-              {...register("password", {
-                required: "Password is required",
+              {...register('password', {
+                required: 'Password is required',
                 minLength: {
                   value: 6,
-                  message: "Password must be at least 6 characters long",
-                },
+                  message: 'Password must be at least 6 characters long'
+                }
               })}
               className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
               placeholder="••••••••"
@@ -99,20 +111,20 @@ const SignupForm: React.FC = () => {
           </div>
           {/* Confirm Password Field */}
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">Confirm Password</label>
+            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+              Confirm Password
+            </label>
             <input
               id="confirmPassword"
               type="password"
-              {...register("confirmPassword", {
-                required: "Please confirm your password",
-                validate: (value) => value === password || "The passwords do not match",
+              {...register('confirmPassword', {
+                required: 'Please confirm your password',
+                validate: value => value === password || 'The passwords do not match'
               })}
               className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
               placeholder="••••••••"
             />
-            {errors.confirmPassword && (
-              <p className="text-sm text-red-600">{errors.confirmPassword.message}</p>
-            )}
+            {errors.confirmPassword && <p className="text-sm text-red-600">{errors.confirmPassword.message}</p>}
           </div>
           <button
             type="submit"
