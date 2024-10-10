@@ -5,6 +5,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '@/store/auth-slice/auth-slice';
+import { AppDispatch } from '@/store/store';
 
 interface IFormInput {
   email: string;
@@ -18,7 +19,7 @@ const LoginForm: React.FC = () => {
     formState: { errors }
   } = useForm<IFormInput>();
   const router = useRouter();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const onSubmit: SubmitHandler<IFormInput> = async data => {
     try {
