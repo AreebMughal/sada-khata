@@ -5,6 +5,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { signupUser } from '@/store/auth-slice/auth-slice';
+import { AppDispatch } from '@/store/store';
 
 interface IFormInput {
   username: string;
@@ -22,7 +23,7 @@ const SignupForm: React.FC = () => {
     watch
   } = useForm<IFormInput>();
   const router = useRouter();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const onSubmit: SubmitHandler<IFormInput> = async data => {
     try {
