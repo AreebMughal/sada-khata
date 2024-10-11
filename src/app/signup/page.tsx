@@ -6,16 +6,14 @@ import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { signup } from '@/store/auth-slice/auth.slice';
 import { AppDispatch } from '@/store/store';
+import { ISignUp } from '@/interfaces/auth.interfaces';
+import { IApiPayload } from '@/interfaces/redux-slice.interfaces';
 
-interface IFormInput {
-  username: string;
-  name: string;
-  email: string;
-  password: string;
+interface IFormInput extends ISignUp {
   confirmPassword: string;
 }
 
-const SignupForm: React.FC = () => {
+export default function Singup() {
   const {
     register,
     handleSubmit,
@@ -26,11 +24,15 @@ const SignupForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const onSubmit: SubmitHandler<IFormInput> = async data => {
-    try {
-      const result = await dispatch(signup(data));
-      if (signup.fulfilled.match(result)) {
+    const payload: IApiPayload<ISignUp> = {
+      payload: data,
+      successCallback: data => {
+        console.log('Signup success:', data);
         router.push('/login');
       }
+    }
+    try {
+      await dispatch(signup(payload));
     } catch (error) {
       console.error('Signup failed:', error);
       alert('Signup failed');
@@ -51,11 +53,23 @@ const SignupForm: React.FC = () => {
             </label>
             <input
               id="name"
-              {...register('name', { required: 'Name is required' })}
+              {...register('firstName', { required: 'Name is required' })}
               className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
               placeholder="Your name"
             />
-            {errors.name && <p className="text-sm text-red-600">{errors.name.message}</p>}
+            {errors.firstName && <p className="text-sm text-red-600">{errors.firstName.message}</p>}
+          </div>
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              Name
+            </label>
+            <input
+              id="name"
+              {...register('firstName', { required: 'Name is required' })}
+              className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Your name"
+            />
+            {errors.firstName && <p className="text-sm text-red-600">{errors.firstName.message}</p>}
           </div>
           {/* Username Field */}
           <div>
@@ -138,5 +152,3 @@ const SignupForm: React.FC = () => {
     </div>
   );
 };
-
-export default SignupForm;

@@ -7,8 +7,8 @@ export interface IReduxInitialState {
 
 export interface IApiPayload<T> {
   payload: T;
-  successCallback?: () => {};
-  failureCallback?: () => {};
+  successCallback?: (data: any | T, ...args: any) => any;
+  failureCallback?: (...args: any) => any;
 }
 
 

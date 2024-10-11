@@ -6,25 +6,29 @@ import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { login } from '@/store/auth-slice/auth.slice';
 import { AppDispatch } from '@/store/store';
+import { IApiPayload } from '@/interfaces/redux-slice.interfaces';
+import { ILogin } from '@/interfaces/auth.interfaces';
 
-interface IFormInput {
-  email: string;
-  password: string;
-}
-
-const LoginForm: React.FC = () => {
+export default function Login() {
   const {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm<IFormInput>();
+  } = useForm<ILogin>();
+
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
 
-  const onSubmit: SubmitHandler<IFormInput> = async data => {
+  const onSubmit: SubmitHandler<ILogin> = async data => {
+    const payload: IApiPayload<ILogin> = {
+      payload: data,
+      successCallback: data => {
+        console.log('Login success:', data);
+        router.push('/dashboard');
+      }
+    };
     try {
-      await dispatch(login(data));
-      router.push('/dashboard');
+      await dispatch(login(payload));
     } catch (error) {
       console.error('Login failed:', error);
       alert('Invalid email or password');
@@ -38,13 +42,13 @@ const LoginForm: React.FC = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Email Field */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email address
+            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+              Username address
             </label>
             <input
-              id="email"
-              type="email"
-              {...register('email', {
+              id="username"
+              type="username"
+              {...register('username', {
                 required: 'Email is required',
                 pattern: {
                   value: /^\S+@\S+$/i,
@@ -54,7 +58,7 @@ const LoginForm: React.FC = () => {
               className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
               placeholder="you@example.com"
             />
-            {errors.email && <p className="text-sm text-red-600">{errors.email.message}</p>}
+            {errors.username && <p className="text-sm text-red-600">{errors.username.message}</p>}
           </div>
           {/* Password Field */}
           <div>
@@ -92,6 +96,4 @@ const LoginForm: React.FC = () => {
       </div>
     </div>
   );
-};
-
-export default LoginForm;
+}
