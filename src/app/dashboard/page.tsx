@@ -1,13 +1,13 @@
 // src/app/dashboard/Dashboard.tsx
 'use client';
 
-import Sidebar from '../sidebar/page';
+import DataTable from '@/components/datatable/datatable';
 
 const Dashboard = () => {
   return (
     <>
       <div>
-        <Sidebar />
+        <DataTable />
       </div>
     </>
   );

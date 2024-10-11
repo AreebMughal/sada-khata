@@ -1,7 +1,7 @@
-import React, { useState, ChangeEvent, FormEventHandler } from 'react';
 import Image from 'next/image';
+import { ChangeEvent, FormEventHandler, useState } from 'react';
 
-export const Createtable = () => {
+export default function DataTable() {
   const [showPopup, setShowPopup] = useState(false);
   const [tableData, setTableData] = useState([
     {
