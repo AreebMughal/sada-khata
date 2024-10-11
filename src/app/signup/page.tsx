@@ -4,7 +4,7 @@ import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
-import { signupUser } from '@/store/auth-slice/auth.slice';
+import { signup } from '@/store/auth-slice/auth.slice';
 import { AppDispatch } from '@/store/store';
 
 interface IFormInput {
@@ -27,8 +27,8 @@ const SignupForm: React.FC = () => {
 
   const onSubmit: SubmitHandler<IFormInput> = async data => {
     try {
-      const result = await dispatch(signupUser(data));
-      if (signupUser.fulfilled.match(result)) {
+      const result = await dispatch(signup(data));
+      if (signup.fulfilled.match(result)) {
         router.push('/login');
       }
     } catch (error) {

@@ -4,7 +4,7 @@ import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
-import { loginUser } from '@/store/auth-slice/auth.slice';
+import { login } from '@/store/auth-slice/auth.slice';
 import { AppDispatch } from '@/store/store';
 
 interface IFormInput {
@@ -23,7 +23,7 @@ const LoginForm: React.FC = () => {
 
   const onSubmit: SubmitHandler<IFormInput> = async data => {
     try {
-      await dispatch(loginUser(data));
+      await dispatch(login(data));
       router.push('/dashboard');
     } catch (error) {
       console.error('Login failed:', error);

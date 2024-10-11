@@ -1,28 +1,49 @@
-import { InitialState } from '@/interfaces/initial-state.interface';
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { ILogin, ISignUp } from '@/interfaces/auth.interfaces';
+import { IApiPayload, IApiResponse, IReduxInitialState } from '@/interfaces/redux-slice.interfaces';
+import { cookieStore } from '@/utils/cookie-store';
+import { execCallbacks } from '@/utils/slice-callbacks';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import authService from './auth.service';
 
-const initialState: InitialState = {
+const initialState: IReduxInitialState = {
   error: null,
   status: 'idle',
   user: null
 };
 
 // Async thunk for signup
-export const signupUser = createAsyncThunk('auth/signupUser', async (userData: any) => {
-  // Simulate API call
-  localStorage.setItem('user', JSON.stringify(userData));
-  return userData;
-});
+export const signup = createAsyncThunk(
+  'auth/signupUser',
+  async ({ payload, ...cbFuns }: IApiPayload<ISignUp>, thunkAPI) => {
+    try {
+      const response: IApiResponse = await authService.signup(payload);
+      execCallbacks(response, cbFuns);
 
-// Async thunk for login
-export const loginUser = createAsyncThunk('auth/loginUser', async (credentials: any) => {
-  const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
-  if (credentials.email === storedUser.email && credentials.password === storedUser.password) {
-    return storedUser;
-  } else {
-    throw new Error('Invalid email or password');
+      return response.succeeded ? response.data : thunkAPI.rejectWithValue(response);
+    } catch (error: any) {
+      thunkAPI.rejectWithValue(error.response.data);
+    }
   }
-});
+);
+
+export const login = createAsyncThunk(
+  'auth/loginUser',
+  async ({ payload, ...cbFuns }: IApiPayload<ILogin>, thunkAPI) => {
+    try {
+      const response: IApiResponse = await authService.login(payload);
+      execCallbacks(response, cbFuns);
+
+      if (response.succeeded) {
+        cookieStore.set('user', response.data.token);
+        return response.data;
+      }
+
+      return thunkAPI.rejectWithValue(response);
+    } catch (error: any) {
+      thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
 
 const authSlice = createSlice({
   name: 'auth',
@@ -31,26 +52,26 @@ const authSlice = createSlice({
   extraReducers: builder => {
     builder
       // Signup cases
-      .addCase(signupUser.pending, state => {
+      .addCase(signup.pending, state => {
         state.status = 'loading';
       })
-      .addCase(signupUser.fulfilled, (state, action) => {
+      .addCase(signup.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.user = action.payload;
       })
-      .addCase(signupUser.rejected, (state, action) => {
+      .addCase(signup.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
       })
       // Login cases
-      .addCase(loginUser.pending, state => {
+      .addCase(login.pending, state => {
         state.status = 'loading';
       })
-      .addCase(loginUser.fulfilled, (state, action) => {
+      .addCase(login.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.user = action.payload;
       })
-      .addCase(loginUser.rejected, (state, action) => {
+      .addCase(login.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
       });
