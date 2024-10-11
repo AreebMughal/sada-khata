@@ -1,18 +1,27 @@
 'use client';
 
 import store from '@/store/store';
+import 'antd/dist/reset.css';
 import { Inter } from 'next/font/google';
-import { Provider } from 'react-redux';
-import './globals.css';
+import { usePathname } from 'next/navigation';
 import { Toaster } from 'react-hot-toast';
+import { Provider } from 'react-redux';
+import AdminLayout from './admin-layout';
+import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
-export default function RootLayout({
-  children
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+
+  if (typeof window !== 'undefined') {
+    window.onload = () => {
+      document.getElementById('holderStyle')!.remove();
+    };
+  }
+
+  const pathname = usePathname();
+  const isPublicRoute = ['/', '/login', '/signup'].includes(pathname);
+
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -23,7 +32,13 @@ export default function RootLayout({
             duration: 3000
           }}
         />
-        <Provider store={store}>{children}</Provider>
+        <Provider store={store}>
+          {isPublicRoute ? (
+            <>{children}</> // Normal layout without sidebar
+          ) : (
+            <AdminLayout>{children}</AdminLayout>
+          )}
+        </Provider>
       </body>
     </html>
   );
