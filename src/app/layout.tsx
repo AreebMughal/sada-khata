@@ -1,7 +1,9 @@
 'use client';
+import './globals.css';
 
+import SidebarHeader from '@/components/sidebar-header/sidebar-header'; // Import your header component
 import store from '@/store/store';
-import 'antd/dist/reset.css';
+// import 'antd/dist/reset.css';
 import { Inter } from 'next/font/google';
 import { usePathname } from 'next/navigation';
 import { Toaster } from 'react-hot-toast';
@@ -28,9 +30,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
         <Provider store={store}>
           {isPublicRoute ? (
-            <>{children}</> // Normal layout without sidebar
+            <>{children}</>
           ) : (
-            <AdminLayout>{children}</AdminLayout>
+            <AdminLayout Header={SidebarHeader}>
+              {children}
+            </AdminLayout>
           )}
         </Provider>
       </body>

@@ -1,53 +1,38 @@
-import Sidebar from '@/components/sidebar/sidebar';
-import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
-import { Breadcrumb, Button, Layout, theme } from 'antd';
+// src/components/layout/AdminLayout.tsx
+
 import React, { useState } from 'react';
+import Sidebar from '@/components/sidebar/sidebar';
 
-const { Header, Content, Footer } = Layout;
+const AdminLayout = ({
+  children,
+  Header,
+}: {
+  children: React.ReactNode;
+  Header: React.ComponentType<{ toggleSidebar: () => void; isSidebarOpen: boolean }>;
+}) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const [collapsed, setCollapsed] = useState(false);
-
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Sidebar collapsed={collapsed} />
-      <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }} >
-        <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
-            style={{
-              fontSize: '16px',
-              width: 64,
-              height: 64,
-            }}
-          />
-          </Header>
-        <Content style={{ margin: '0 16px' }}>
-          <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
-          </Breadcrumb>
-          <div
-            style={{
-              padding: 24,
-              minHeight: 360,
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG,
-            }}
-          >
-            {children}
-          </div>
-        </Content>
-        <Footer style={{ textAlign: 'center' }}>
-          Ant Design ©{new Date().getFullYear()} Created by Ant UED
-        </Footer>
-      </Layout>
-    </Layout>
+    <div className="flex min-h-screen">
+      {/* Sidebar */}
+      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col">
+        {/* Header */}
+        <Header toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
+
+        {/* Content */}
+        <main className="flex-1 p-4 bg-gray-100">
+          {children}
+        </main>
+      </div>
+    </div>
   );
 };
+
+export default AdminLayout;

@@ -1,11 +1,7 @@
 'use client';
 
-import SignupForm from './signup/page';
+import Home from '@/components/home/home';
 
-export default function Home() {
-  return (
-    <main className="">
-      <SignupForm />
-    </main>
-  );
+export default function Page() {
+  return <Home />;
 }

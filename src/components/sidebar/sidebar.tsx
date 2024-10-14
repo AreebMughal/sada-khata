@@ -1,56 +1,52 @@
-import {
-  DesktopOutlined,
-  FileOutlined,
-  PieChartOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { Layout, Menu } from 'antd';
 import React from 'react';
 
-const { Sider } = Layout;
+const SidebarContent = ({ isOpen, toggleSidebar }: { isOpen: boolean; toggleSidebar: () => void }) => (
+  <div
+    className={`bg-gray-800 text-white transform transition-transform duration-300 ease-in-out w-64 ${
+      isOpen ? 'translate-x-0 block' : '-translate-x-full hidden'
+    } md:relative md:block fixed inset-y-0 left-0`}
+    style={{ display: isOpen ? 'block' : 'none' }} 
+  >
+    <div className="p-5 h-full">
+      <h2 className="text-2xl font-bold italic">SADA KHATA</h2>
+      <ul className="mt-4 space-y-2">
+        <li>
+          <a href="#" className="block p-2 hover:bg-gray-700 rounded" >
+            Home
+          </a>
+        </li>
+        <li>
+          <a href="#" className="block p-2 hover:bg-gray-700 rounded" >
+            About
+          </a>
+        </li>
+        <li>
+          <a href="#" className="block p-2 hover:bg-gray-700 rounded" >
+            Services
+          </a>
+        </li>
+        <li>
+          <a href="#" className="block p-2 hover:bg-gray-700 rounded" >
+            Contact
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+);
 
-type MenuItem = Required<MenuProps>['items'][number];
+const SidebarOverlay = ({ isOpen, toggleSidebar }: { isOpen: boolean; toggleSidebar: () => void }) => (
+  isOpen && <div className="fixed inset-0 bg-black opacity-50 z-30 md:hidden" onClick={toggleSidebar} />
+);
 
-function getItem(
-  label?: React.ReactNode,
-  key?: React.Key,
-  icon?: React.ReactNode,
-  children?: MenuItem[],
-): MenuItem {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  } as MenuItem;
-}
+const Sidebar = ({ isOpen, toggleSidebar }: { isOpen: boolean; toggleSidebar: () => void }) => (
+  <>
+    {/* Sidebar content */}
+    <SidebarContent isOpen={isOpen} toggleSidebar={toggleSidebar} />
 
-const items: MenuItem[] = [
-  getItem(null, '0', <>
-  </>),
-  getItem('Option 1', '1', <PieChartOutlined />),
-  getItem('Option 2', '2', <DesktopOutlined />),
-  getItem('User', 'sub1', <UserOutlined />, [
-    getItem('Tom', '3'),
-    getItem('Bill', '4'),
-    getItem('Alex', '5'),
-  ]),
-  getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-  getItem('Files', '9', <FileOutlined />),
-];
+    {/* Sidebar overlay (for closing the sidebar when clicking outside) */}
+    <SidebarOverlay isOpen={isOpen} toggleSidebar={toggleSidebar} />
+  </>
+);
 
-interface IProps {
-  collapsed: boolean
-}
-
-export default function Sidebar({ collapsed }: IProps) {
-
-  return (
-    <Sider trigger={null} collapsible collapsed={collapsed}>
-      
-      <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
-    </Sider>
-  )
-}
+export default Sidebar;
