@@ -1,6 +1,6 @@
 import { ILogin, ISignUp } from '@/interfaces/auth.interfaces';
 import { IApiPayload, IApiResponse, IReduxInitialState } from '@/interfaces/redux-slice.interfaces';
-import { cookieStore } from '@/utils/cookie-store';
+import Cookies from 'js-cookie';
 import { execCallbacks } from '@/utils/slice-callbacks';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import authService from './auth.service';
@@ -34,7 +34,7 @@ export const login = createAsyncThunk(
       execCallbacks(response, cbFuns);
 
       if (response.succeeded) {
-        cookieStore.set('user', response.data.token);
+        Cookies.set('user', response.data.token);
         return response.data;
       }
 

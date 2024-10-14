@@ -13,12 +13,6 @@ const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
 
-  if (typeof window !== 'undefined') {
-    window.onload = () => {
-      document.getElementById('holderStyle')!.remove();
-    };
-  }
-
   const pathname = usePathname();
   const isPublicRoute = ['/', '/login', '/signup'].includes(pathname);
 
