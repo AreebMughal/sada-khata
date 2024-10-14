@@ -6,47 +6,48 @@ import { Inter } from 'next/font/google';
 import { usePathname } from 'next/navigation';
 import { Provider } from 'react-redux';
 import AdminLayout from './admin-layout';
+import SidebarHeader from '@/components/sidebar-header/sidebar-header'; // Import your header component
 import './globals.css';
 import Head from 'next/head';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({
-  children
+  children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   if (typeof window !== 'undefined') {
     window.onload = () => {
-        document.getElementById('holderStyle')!.remove();
+      document.getElementById('holderStyle')!.remove();
     };
-}
+  }
 
   const pathname = usePathname();
   const isPublicRoute = ['/', '/login', '/signup'].includes(pathname);
 
-
   return (
     <html lang="en">
       <header>
-      <style
-                id="holderStyle"
-                dangerouslySetInnerHTML={{
-                    __html: `
+        <style
+          id="holderStyle"
+          dangerouslySetInnerHTML={{
+            __html: `
                     *, *::before, *::after {
                         transition: none!important;
                     }
                     `,
-                }}
-            />
+          }}
+        />
       </header>
       <body className={inter.className}>
         <Provider store={store}>
           {isPublicRoute ? (
             <>{children}</> // Normal layout without sidebar
           ) : (
-            <AdminLayout>{children}</AdminLayout>
+            <AdminLayout Header={SidebarHeader}> {/* Pass the Header prop */}
+              {children}
+            </AdminLayout>
           )}
         </Provider>
       </body>
