@@ -1,7 +1,6 @@
 'use client';
 import './globals.css';
 
-import SidebarHeader from '@/components/sidebar-header/sidebar-header'; // Import your header component
 import store from '@/store/store';
 // import 'antd/dist/reset.css';
 import { Inter } from 'next/font/google';

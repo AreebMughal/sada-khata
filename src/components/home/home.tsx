@@ -15,7 +15,7 @@ export default function Home() {
         <main className=''> 
             <Navbar />
             <Banner />
-            <Companies />
+            {/* <Companies /> */}
             <Work />
             <Table />
             <Features />

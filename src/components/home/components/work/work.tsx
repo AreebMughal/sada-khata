@@ -36,8 +36,8 @@ const Work = () => {
             <div className='mx-auto max-w-7xl mt-16 px-6 mb-20 relative'>
                 {/* <div className="radial-bgone hidden lg:block"></div> */}
                 <div className='text-center mb-14'>
-                    <h3 className='text-offwhite text-3xl md:text-5xl font-bold mb-3'>How it work</h3>
-                    <p className='text-bluish md:text-lg font-normal leading-8'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. <br /> Lorem Ipsum has been the industry standard dummy text ever.</p>
+                    <h3 className='text-3xl md:text-5xl font-bold mb-3'>How it work</h3>
+                    <p className='md:text-lg font-normal leading-8'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. <br /> Lorem Ipsum has been the industry standard dummy text ever.</p>
                 </div>
 
                 <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-y-20 gap-x-5 mt-32'>

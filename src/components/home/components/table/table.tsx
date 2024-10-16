@@ -13,7 +13,7 @@ interface table {
 const tableData: table[] = [
     {
         index: 1,
-        name: "Bitcoin(BTC)",
+        name: "Alice",
         imgSrc: '/images/Table/bitcoin.svg',
         price: 16458.23,
         change: 3.96,
@@ -22,7 +22,7 @@ const tableData: table[] = [
     },
     {
         index: 2,
-        name: "Ethereum(ETH)",
+        name: "Atom",
         imgSrc: '/images/Table/cryptoone.svg',
         price: 16458.23,
         change: 3.96,
@@ -31,7 +31,7 @@ const tableData: table[] = [
     },
     {
         index: 3,
-        name: "Tether(USDT)",
+        name: "Robert",
         imgSrc: '/images/Table/cryptothree.svg',
         price: 16458.23,
         change: -3.96,
@@ -40,7 +40,7 @@ const tableData: table[] = [
     },
     {
         index: 4,
-        name: "Binance Coin(BNB)",
+        name: "Ayesha",
         imgSrc: '/images/Table/cryptotwo.svg',
         price: 16458.23,
         change: -3.96,
@@ -70,7 +70,10 @@ const Table = () => {
                             {tableData.map((items, i) => (
                                 <tr key={i} className="border-b border-b-darkblue">
                                     <td className="px-4 py-6 text-center text-white">{items.index}</td>
-                                    <td className="px-4 py-6 text-center text-white flex items-center justify-start gap-5 "><Image src={items.imgSrc} alt={items.imgSrc} height={50} width={50} />{items.name}</td>
+                                    <td className="px-4 py-6 text-center text-white flex items-center justify-start gap-5 ">
+                                        {/* <Image src={items.imgSrc} alt={items.imgSrc} height={50} width={50} /> */}
+                                        {items.name}
+                                    </td>
                                     <td className="px-4 py-6 text-center text-white">${items.price.toLocaleString()}</td>
                                     <td className={`px-4 py-6 text-center ${items.change < 0 ? 'text-red' : 'text-green'} `}>{items.change}%</td>
                                     <td className="px-4 py-6 text-center text-white">${items.cap.toLocaleString()}</td>

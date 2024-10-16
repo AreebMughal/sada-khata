@@ -27,8 +27,8 @@ const faqdata: faqdata[] = [
 const Faq = () => {
     return (
         <div className="my-20 px-6" id="faq-section">
-            <h3 className="text-center text-3xl lg:text-5xl font-bold text-offwhite mb-3">Frequently Asked And Question</h3>
-            <p className="text-center lg:text-lg font-normal text-bluish">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has <br /> been the industry standard dummy text ever since the 1500s,</p>
+            <h3 className="text-center text-3xl lg:text-5xl font-bold text-[#0C1A48] mb-3">Frequently Asked And Question</h3>
+            <p className="text-center lg:text-lg font-normal text-[#0C1A48]">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has <br /> been the industry standard dummy text ever since the 1500s,</p>
 
             <div className="mx-auto max-w-7xl">
                 <div className="grid lg:grid-cols-2">
@@ -48,7 +48,7 @@ const Faq = () => {
                                                             } h-5 w-5 text-purple-500`}
                                                     />
                                                 </Disclosure.Button>
-                                                <Disclosure.Panel className="px-4 pt-4 pb-2 md:text-lg text-bluish font-normal opacity-50">{items.subheading}</Disclosure.Panel>
+                                                <Disclosure.Panel className="px-4 pt-4 pb-2 md:text-lg text-white font-normal opacity-50">{items.subheading}</Disclosure.Panel>
                                             </>
                                         )}
                                     </Disclosure>

@@ -15,8 +15,8 @@ const Trade = () => {
                 {/* Column-2 */}
 
                 <div>
-                    <h3 className="text-3xl lg:text-5xl font-semibold text-offwhite mb-6 text-center sm:text-start">Trade Anywhere <br /> Any time</h3>
-                    <p className="lg:text-lg font-normal text-lightblue mb-16 text-center sm:text-start">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                    <h3 className="text-3xl lg:text-5xl font-semibold mb-6 text-center sm:text-start text-[#0C1A48]">Trade Anywhere <br /> Any time</h3>
+                    <p className="lg:text-lg font-normal mb-16 text-center sm:text-start text-[#0C1A48]">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
                     <div className="flex justify-between">
                         <Image src={'/images/Trade/mac.svg'} alt="macOS-image" width={61} height={105} />
                         <div className="verticalLine"></div>
