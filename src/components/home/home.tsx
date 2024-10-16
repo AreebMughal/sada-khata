@@ -12,10 +12,10 @@ import Footer from './components/footer/footer';
 
 export default function Home() {
     return (
-        <main>
+        <main className=''> 
             <Navbar />
             <Banner />
-            <Companies />
+            {/* <Companies /> */}
             <Work />
             <Table />
             <Features />
