@@ -32,7 +32,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           {isPublicRoute ? (
             <>{children}</>
           ) : (
-            <AdminLayout Header={SidebarHeader}>
+            <AdminLayout>
               {children}
             </AdminLayout>
           )}
