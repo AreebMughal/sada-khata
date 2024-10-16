@@ -405,7 +405,8 @@ th:last-child {
   border-radius: 508.5px;
   width: 51rem;
   height: 50rem;
-  right: -13%;
+  /* right: -13%; */
+  right: 0;
   top: 50%;
 }
 

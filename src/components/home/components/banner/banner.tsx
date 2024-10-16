@@ -9,7 +9,7 @@ const Banner = () => {
     return (
         <div className='bg-image relative' id="home-section">
             <div className='arrowOne'></div>
-            <div className='radial-banner hidden lg:block'></div>
+            <div className='radial-banner hidden lg:content'></div>
             {/* <ModalVideo channel='youtube' isOpen={isOpen} videoId="1YyAzVmP9xQ" onClose={() => setOpen(false)} /> */}
 
             <div className="mx-auto max-w-7xl pt-16 lg:pt-40 sm:pb-24 px-6">
@@ -28,7 +28,7 @@ const Banner = () => {
                             </div>
                         </div>
 
-                        <div className='col-span-5 lg:-m-48'>
+                        <div className='col-span-5 '>
                             <div className='arrowThree'></div>
                             <div className='arrowFour'></div>
                             <div className='arrowFive'></div>

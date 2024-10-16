@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const Trade = () => {
     return (
-        <div className="mx-auto max-w-7xl mt-48 mb-16 px-6 relative">
+        <div className="mx-auto  mt-48 mb-16 px-6 relative ">
             <div className="radial-bgone hidden lg:block"></div>
 
             <div className="grid lg:grid-cols-2 gap-x-5">
