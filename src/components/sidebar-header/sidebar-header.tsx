@@ -1,5 +1,5 @@
 import React from 'react';
-import { MenuOutlined, CloseOutlined } from '@ant-design/icons';
+import { MenuOutlined } from '@ant-design/icons';
 
 const SidebarHeader = ({
   toggleSidebar,

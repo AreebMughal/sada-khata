@@ -34,7 +34,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
         <SidebarHeader toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
 
         {/* Content */}
-        <main className="flex-1 p-4 bg-gray-100">{children}</main>
+        <main className="flex-1 p-4 bg-gray-100 mt-14">{children}</main>
       </div>
     </div>
   );
