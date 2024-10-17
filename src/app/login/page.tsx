@@ -1,13 +1,12 @@
 'use client';
 
-import React from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
-import { useDispatch } from 'react-redux';
+import { ILogin } from '@/interfaces/auth.interfaces';
+import { IApiPayload } from '@/interfaces/redux-slice.interfaces';
 import { login } from '@/store/auth-slice/auth.slice';
 import { AppDispatch } from '@/store/store';
-import { IApiPayload } from '@/interfaces/redux-slice.interfaces';
-import { ILogin } from '@/interfaces/auth.interfaces';
+import { useRouter } from 'next/navigation';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 
 export default function Login() {
   const {

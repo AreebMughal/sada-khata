@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import AdminNavbar from '@/components/admin-navbar/admin-navbar';
 import Sidebar from '@/components/sidebar/sidebar';
-import SidebarHeader from '@/components/sidebar-header/sidebar-header';
+import { IReactChild } from '@/interfaces/react-child.interface';
+import { useEffect, useState } from 'react';
 
-const AdminLayout = ({ children }: { children: React.ReactNode }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // Open by default on large screens
+const AdminLayout = ({ children }: IReactChild) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
@@ -25,16 +26,14 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="flex min-h-screen bg-gray">
-      {/* Sidebar */}
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
       {/* Main Content */}
-      <div className={`flex-1 flex flex-col transition-all duration-300 ${isSidebarOpen ? 'lg:ml-64' : 'lg:ml-0'}`}>
-        {/* Header */}
-        <SidebarHeader toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
+      <div className={`bg-gray-100 flex-1 flex flex-col transition-all duration-300 ${isSidebarOpen ? 'lg:ml-64' : 'lg:ml-0'}`}>
 
-        {/* Content */}
-        <main className="flex-1 p-4 bg-gray-100 mt-14">{children}</main>
+        <AdminNavbar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
+
+        <main className="flex-1 p-4 bg-white rounded-md mt-24 mx-5 mb-10">{children}</main>
       </div>
     </div>
   );
