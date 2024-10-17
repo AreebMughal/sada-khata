@@ -9,7 +9,7 @@ const config: Config = {
     './src/**/*.{js,ts,jsx,tsx}'
   ],
   theme: {
-    extends: {
+    extend: {
       colors: {
         transparent: 'transparent',
         current: 'currentColor',
