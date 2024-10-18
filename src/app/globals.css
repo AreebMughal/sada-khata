@@ -39,6 +39,7 @@ body {
 html {
   scroll-behavior: smooth !important;
 }
+
 h1 {
   color: var(--theme-color-darker)
 }
@@ -388,13 +389,13 @@ html:not([data-scroll="0"]) .navbar {
   margin-top: 20px;
 }
 
-td:first-child,
-th:first-child {
+.home td:first-child,
+.home th:first-child {
   border-radius: 15px 0 0 15px;
 }
 
-td:last-child,
-th:last-child {
+.home td:last-child,
+.home th:last-child {
   border-radius: 0 15px 15px 0;
 }
 

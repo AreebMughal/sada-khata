@@ -10,7 +10,7 @@ import Work from './components/work/work';
 
 export default function Home() {
   return (
-    <main className="">
+    <main className="home">
       <Navbar />
       <Banner />
       {/* <Companies /> */}
