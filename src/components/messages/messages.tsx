@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 
 // Type Definitions
@@ -35,7 +35,7 @@ export default function Chat() {
   const [chatHistory, setChatHistory] = useState(conversations);
   const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [showSidebar, setShowSidebar] = useState<boolean>(false); // Controls sidebar visibility
   const emojiInputRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSendMessage = () => {
@@ -68,32 +68,39 @@ export default function Chat() {
     }
   };
 
-  const filteredUsers = Object.keys(conversations).filter((name) =>
-    name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleUserSelection = (name: UserName) => {
+    setSelectedUser(name);
+    setShowSidebar(false); // Close sidebar on small screens
+  };
 
   return (
-    <div className="flex h-[86vh] antialiased text-gray-800">
-      <div className="flex flex-row w-full overflow-hidden">
+    <div className="h-screen flex flex-col text-gray-800">
+      {/* Icons for Small Screens */}
+      <div className="flex justify-between p-4 bg-indigo-600 text-white md:hidden">
+        <button onClick={() => setShowSidebar((prev) => !prev)}>
+          <span className="material-icons">account_circle</span> {/* Profile Icon */}
+        </button>
+        <span className="font-bold">QuickChat</span>
+        <button onClick={() => setSelectedUser(null)}>
+          <span className="material-icons">chat</span> {/* Chat Icon */}
+        </button>
+      </div>
+
+      <div className="flex flex-1">
         {/* Sidebar */}
-        <div className="w-64 bg-white flex-shrink-0 p-6 hidden md:block">
+        <div
+          className={`absolute md:relative w-64 bg-white p-6 transition-transform transform ${
+            showSidebar ? "translate-x-0" : "-translate-x-full"
+          } md:translate-x-0`}
+        >
           <div className="text-center font-bold text-2xl italic mb-8">QuickChat</div>
-
-          {/* Search Bar */}
-          <input
-            type="text"
-            placeholder="Search conversations..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-2 mb-4 rounded-lg border focus:outline-none focus:border-indigo-300"
-          />
-
           <div className="text-xs font-bold mb-4">Active Conversations</div>
+
           <div className="space-y-2">
-            {filteredUsers.map((name) => (
+            {Object.keys(conversations).map((name) => (
               <button
                 key={name}
-                onClick={() => setSelectedUser(name as UserName)}
+                onClick={() => handleUserSelection(name as UserName)}
                 className="w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-lg"
               >
                 <div className="h-8 w-8 rounded-full bg-indigo-200 flex items-center justify-center">
@@ -107,70 +114,68 @@ export default function Chat() {
 
         {/* Chat Window */}
         <div className="flex-1 p-6">
-          <div className="h-full flex flex-col bg-gray-100 rounded-lg p-4">
-            {selectedUser ? (
-              <>
-                <div className="text-xl font-semibold mb-4">{selectedUser}</div>
-                <div className="flex-grow overflow-y-auto space-y-4 pr-4">
-                  {chatHistory[selectedUser].map((msg, idx) => (
+          {selectedUser ? (
+            <div className="h-full flex flex-col bg-gray-100 rounded-lg p-4">
+              <div className="text-xl font-semibold mb-4">{selectedUser}</div>
+              <div className="flex-grow overflow-y-auto space-y-4 pr-4">
+                {chatHistory[selectedUser].map((msg, idx) => (
+                  <div
+                    key={idx}
+                    className={`flex ${msg.from === "You" ? "justify-end" : "justify-start"}`}
+                  >
                     <div
-                      key={idx}
-                      className={`flex ${msg.from === "You" ? "justify-end" : "justify-start"}`}
+                      className={`max-w-md p-3 rounded-lg shadow ${
+                        msg.from === "You" ? "bg-indigo-100" : "bg-white"
+                      }`}
                     >
-                      <div
-                        className={`max-w-md p-3 rounded-lg shadow ${
-                          msg.from === "You" ? "bg-indigo-100" : "bg-white"
-                        }`}
-                      >
-                        <p className="whitespace-pre-line">{msg.message}</p>
-                        {msg.attachment && (
-                          <a
-                            href={URL.createObjectURL(msg.attachment)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-indigo-600 underline mt-2 block"
-                          >
-                            {msg.attachment.name}
-                          </a>
-                        )}
-                      </div>
+                      <p className="whitespace-pre-line">{msg.message}</p>
+                      {msg.attachment && (
+                        <a
+                          href={URL.createObjectURL(msg.attachment)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-indigo-600 underline mt-2 block"
+                        >
+                          {msg.attachment.name}
+                        </a>
+                      )}
                     </div>
-                  ))}
-                </div>
-              </>
-            ) : (
-              <div className="h-full flex items-center justify-center text-gray-400">
-                Select a conversation to start chatting
+                  </div>
+                ))}
               </div>
-            )}
 
-            {/* Input Field */}
-            <div className="relative flex items-center mt-4">
-              <textarea
-                ref={emojiInputRef}
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="Type your message..."
-                className="w-full h-10 resize-none rounded-lg p-2 border focus:outline-none focus:border-indigo-300"
-              />
-              <button onClick={() => setShowEmojiPicker((prev) => !prev)} className="ml-2">
-                😊
-              </button>
-              {showEmojiPicker && (
-                <div className="absolute bottom-16 left-0 z-10">
-                  <EmojiPicker onEmojiClick={onEmojiClick} />
-                </div>
-              )}
-              <input type="file" onChange={handleFileChange} className="hidden" id="file-upload" />
-              <label htmlFor="file-upload" className="cursor-pointer ml-2">
-                📎
-              </label>
-              <button onClick={handleSendMessage} className="ml-2 text-indigo-600">
-                Send
-              </button>
+              {/* Input Field */}
+              <div className="relative flex items-center mt-4">
+                <textarea
+                  ref={emojiInputRef}
+                  value={inputMessage}
+                  onChange={(e) => setInputMessage(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Type your message..."
+                  className="w-full h-10 resize-none rounded-lg p-2 border focus:outline-none focus:border-indigo-300"
+                />
+                <button onClick={() => setShowEmojiPicker((prev) => !prev)} className="ml-2">
+                  😊
+                </button>
+                {showEmojiPicker && (
+                  <div className="absolute bottom-16 left-0 z-10">
+                    <EmojiPicker onEmojiClick={onEmojiClick} />
+                  </div>
+                )}
+                <input type="file" onChange={handleFileChange} className="hidden" id="file-upload" />
+                <label htmlFor="file-upload" className="cursor-pointer ml-2">
+                  📎
+                </label>
+                <button onClick={handleSendMessage} className="ml-2 text-indigo-600">
+                  Send
+                </button>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="h-full flex items-center justify-center text-gray-400">
+              Select a conversation to start chatting
+            </div>
+          )}
         </div>
       </div>
     </div>
