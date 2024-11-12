@@ -1,15 +1,8 @@
-"use client";
-
+'use client'
 import React, { useState, useRef } from "react";
 import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 
-// Type Definitions
-type UserName =
-  | "Henry Boyd"
-  | "Marta Curtis"
-  | "Philip Tucker"
-  | "Christine Reid"
-  | "Jerry Guzman";
+type UserName = "Henry Boyd" | "Marta Curtis" | "Philip Tucker" | "Christine Reid" | "Jerry Guzman";
 
 interface Message {
   from: string;
@@ -17,7 +10,6 @@ interface Message {
   attachment?: File | null;
 }
 
-// Mock Data
 const conversations: Record<UserName, Message[]> = {
   "Henry Boyd": [{ from: "Henry", message: "Hey, how are you today? 🌞" }],
   "Marta Curtis": [
@@ -35,7 +27,9 @@ export default function Chat() {
   const [chatHistory, setChatHistory] = useState(conversations);
   const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [showSidebar, setShowSidebar] = useState<boolean>(false); // Controls sidebar visibility
+  const [showSidebar, setShowSidebar] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
   const emojiInputRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSendMessage = () => {
@@ -70,34 +64,48 @@ export default function Chat() {
 
   const handleUserSelection = (name: UserName) => {
     setSelectedUser(name);
-    setShowSidebar(false); // Close sidebar on small screens
+    setShowSidebar(false);
   };
 
+  const filteredConversations = Object.keys(conversations).filter((name) =>
+    name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <div className="h-screen flex flex-col text-gray-800">
-      {/* Icons for Small Screens */}
+    <div className="h-[86vh] flex flex-col text-gray-800 ">
       <div className="flex justify-between p-4 bg-indigo-600 text-white md:hidden">
         <button onClick={() => setShowSidebar((prev) => !prev)}>
-          <span className="material-icons">account_circle</span> {/* Profile Icon */}
+          <span className="material-icons">Account</span>
         </button>
         <span className="font-bold">QuickChat</span>
         <button onClick={() => setSelectedUser(null)}>
-          <span className="material-icons">chat</span> {/* Chat Icon */}
+          <span className="material-icons">Chat</span>
         </button>
       </div>
 
       <div className="flex flex-1">
-        {/* Sidebar */}
         <div
           className={`absolute md:relative w-64 bg-white p-6 transition-transform transform ${
             showSidebar ? "translate-x-0" : "-translate-x-full"
           } md:translate-x-0`}
         >
           <div className="text-center font-bold text-2xl italic mb-8">QuickChat</div>
+
+          {/* Search bar */}
+          <div className="mb-4">
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full p-2 rounded border focus:outline-none focus:border-indigo-300"
+            />
+          </div>
+
           <div className="text-xs font-bold mb-4">Active Conversations</div>
 
           <div className="space-y-2">
-            {Object.keys(conversations).map((name) => (
+            {filteredConversations.map((name) => (
               <button
                 key={name}
                 onClick={() => handleUserSelection(name as UserName)}
@@ -117,25 +125,14 @@ export default function Chat() {
           {selectedUser ? (
             <div className="h-full flex flex-col bg-gray-100 rounded-lg p-4">
               <div className="text-xl font-semibold mb-4">{selectedUser}</div>
-              <div className="flex-grow overflow-y-auto space-y-4 pr-4">
+
+              <div className="flex-grow overflow-y-auto space-y-4 pr-4" style={{ maxHeight: '60vh' }}>
                 {chatHistory[selectedUser].map((msg, idx) => (
-                  <div
-                    key={idx}
-                    className={`flex ${msg.from === "You" ? "justify-end" : "justify-start"}`}
-                  >
-                    <div
-                      className={`max-w-md p-3 rounded-lg shadow ${
-                        msg.from === "You" ? "bg-indigo-100" : "bg-white"
-                      }`}
-                    >
+                  <div key={idx} className={`flex ${msg.from === "You" ? "justify-end" : "justify-start"}`}>
+                    <div className={`max-w-md p-3 rounded-lg shadow ${msg.from === "You" ? "bg-indigo-100" : "bg-white"}`}>
                       <p className="whitespace-pre-line">{msg.message}</p>
                       {msg.attachment && (
-                        <a
-                          href={URL.createObjectURL(msg.attachment)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-indigo-600 underline mt-2 block"
-                        >
+                        <a href={URL.createObjectURL(msg.attachment)} target="_blank" rel="noopener noreferrer" className="text-indigo-600 underline mt-2 block">
                           {msg.attachment.name}
                         </a>
                       )}
@@ -144,7 +141,6 @@ export default function Chat() {
                 ))}
               </div>
 
-              {/* Input Field */}
               <div className="relative flex items-center mt-4">
                 <textarea
                   ref={emojiInputRef}
